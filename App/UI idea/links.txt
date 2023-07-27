@@ -1,0 +1,1 @@
+https://github.com/fseehawer/react-circular-slider

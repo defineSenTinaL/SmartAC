@@ -1,0 +1,41 @@
+
+
+
+import { MqttClient } from "./utils/MqttClient";
+
+
+
+const [message, setMessage] = React.useState("");
+  const [publishPayload, setPublishPayload] = React.useState("");
+  const [publishTopic, setPublishTopic] = React.useState("");
+  const [subscribeTopic, setSubscribeTopic] = React.useState("");
+  const [isSubscribed, setSubscribed] = React.useState(false);
+  const [mqttConnected, setMqttConnected] = React.useState(false);
+
+  React.useEffect(() => {
+    MqttClient.onConnect(onSuccess, onConnectionLost);
+  }, []);
+
+  const onSuccess = () => {
+    console.info("Mqtt Connected");
+    setMqttConnected(true);
+  };
+
+  const onConnectionLost = () => {
+    setMqttConnected(false);
+    console.info("Mqtt Fail to connect");
+  };
+
+  const onSubscribe = (message) => {
+    setMessage(message);
+  };
+
+  function onSubscribeHandler() {
+    MqttClient.onSubscribe(subscribeTopic, onSubscribe);
+    setSubscribed(true);
+  }
+
+  function onPublishHandler() {
+    MqttClient.onPublish(publishTopic, publishPayload);
+    setPublishPayload("");
+  }
